@@ -1,97 +1,86 @@
+import { Header } from "./components/Header"
+import { GeneralForm } from "./components/General_form"
+import { GeneralDisplay } from "./components/General_display"; 
+import { EducationForm } from "./components/Education_form"
+import { EducationDisplay } from "./components/Education_display"
+import { SkillsForm } from "./components/Skills_form"; 
+import { SkillsDisplay } from "./components/Skills_display"; 
 import { useState } from "react";
-import General from "./components/General_info";
-import Educational from "./components/Education_info";
-import Practical from "./components/Practical_info";
 import "./App.css";
 
-
-function App() {
-  const [info, setInfo] = useState({
-    name: "",
+//our main component, here we will refrence other components in return
+export default function App () {
+  const [currentValue, setCurrentValue] = useState({
+    fullName: "",
     email: "",
     phone: "",
-    schoolName: "",
-    studyTitle: "",
-    studyDate: "",
-    companyName: "",
-    positionTitle: "",
-    jobResponsibilities: "",
-    dateFrom: "",
-    dateUntil: "",
-  });
-
-  const updateName = (name) => {
-    setInfo((prevInfo) => ({ ...prevInfo, name }));
-  };
-  const updateEmail = (email) => {
-    setInfo((prevInfo) => ({ ...prevInfo, email }));
-  };
-  const updatePhone = (phone) => {
-    setInfo((prevInfo) => ({ ...prevInfo, phone }));
-  };
-  const updateSchoolName = (schoolName) => {
-    setInfo((prevInfo) => ({ ...prevInfo, schoolName }));
-  };
-  const updateStudyTitle = (studyTitle) => {
-    setInfo((prevInfo) => ({ ...prevInfo, studyTitle }));
-  };
-  const updateStudyDate = (studyDate) => {
-    setInfo((prevInfo) => ({ ...prevInfo, studyDate }));
-  };
-  const updateCompanyName = (companyName) => {
-    setInfo((prevInfo) => ({ ...prevInfo, companyName }));
-  };
-  const updatePositionTitle = (positionTitle) => {
-    setInfo((prevInfo) => ({ ...prevInfo, positionTitle }));
-  };
-  const updateJobResponsibilities = (jobResponsibilities) => {
-    setInfo((prevInfo) => ({ ...prevInfo, jobResponsibilities }));
-  };
-  const updateDateFrom = (dateFrom) => {
-    setInfo((prevInfo) => ({ ...prevInfo, dateFrom }));
-  };
-  const updateDateUntil = (dateUntil) => {
-    setInfo((prevInfo) => ({ ...prevInfo, dateUntil }));
-  };
-
+    school: "",
+    college: "",
+    lastJob: "",
+    skills: ""
+  })
+  
+  
+  function handleSubmit (e) {
+    //preventing page reload when clicked
+    e.preventDefault();
+    console.log(currentValue);
+  } 
+  
+  //handles the changes when user tipes something (trigers setCurrentValue function that will re-render changes for us)
+  function handleInputchange (identifier, value) {
+    setCurrentValue(prevValue => ({
+      ...prevValue,
+      [identifier] : value
+    }))
+  }
+ 
+  //passing our Display and Form components
   return (
     <>
-      <h1>CV Application</h1>
-      <div id="container">
-        <div>
-          <General
-            updateName={updateName}
-            updateEmail={updateEmail}
-            updatePhone={updatePhone}
-          />
-          <Educational
-            updateSchoolName={updateSchoolName}
-            updateStudyTitle={updateStudyTitle}
-            updateStudyDate={updateStudyDate}
-          />
-          <Practical
-            updateCompanyName={updateCompanyName}
-            updatePositionTitle={updatePositionTitle}
-            updateJobResponsibilities={updateJobResponsibilities}
-            updateDateFrom={updateDateFrom}
-            updateDateUntil={updateDateUntil}
-          />
+    <div className = "content">
+      <div className="header-container">
+        <Header />
+      </div>
+
+      <div className="main-forms">
+        <div className="general-form">
+          <GeneralForm onSubmit = {(e) => handleSubmit(e)} inputHandle = {handleInputchange} //passing functions as props
+          currentValue = {currentValue}/>
         </div>
-        <div>
-          <p>Name: {info.name}</p>
-          <p>Email: {info.email}</p>
-          <p>Phone: {info.phone}</p>
-          <p>School Name: {info.schoolName}</p>
-          <p>Study Title: {info.studyTitle}</p>
-          <p>Study Date: {info.studyDate}</p>
-          <p>Company Name: {info.companyName}</p>
-          <p>Position Title: {info.positionTitle}</p>
-          <p>Job Responsibilities: {info.jobResponsibilities}</p>
-          <p>From: {info.dateFrom}</p>
-          <p>Until: {info.dateUntil}</p>
+        <div className="education-form">
+          <EducationForm onSubmit = {(e) => handleSubmit(e)} inputHandle = {handleInputchange} 
+          currentValue = {currentValue}/>
+        </div>
+        <div className="skills-form">
+          <SkillsForm onSubmit = {(e) => handleSubmit(e)} inputHandle = {handleInputchange}
+          currentValue = {currentValue}/>
         </div>
       </div>
+      
+      <div className="cv-container">
+        <div className="general-display">
+          <GeneralDisplay
+          currentValue = {currentValue}/>
+        </div>
+         
+
+        <div className="education-display">
+          <EducationDisplay
+          currentValue = {currentValue}/>
+        </div>
+
+        <div className="skills">
+          <SkillsDisplay
+          currentValue = {currentValue}/>
+        </div>
+
+      </div>
+    </div>
     </>
-  );
+    
+  )
+
+
 }
-export default App;
+  

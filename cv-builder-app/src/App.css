@@ -2,8 +2,8 @@ input {
     display: block;
     margin: 1rem;
   }
-  #container {
+.content {
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    
   }
